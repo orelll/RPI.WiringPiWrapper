@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPI.WiringPiWrapper", "RPI.WiringPiWrapper\RPI.WiringPiWrapper.csproj", "{5BE2CC36-71A3-47E0-B953-FD9C2C16D7B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPI.WiringPiWrapper.Tests", "RPI.WiringPiWrapper.Tests\RPI.WiringPiWrapper.Tests.csproj", "{55D10F2D-B714-4D67-83C1-A201EA64D123}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5BE2CC36-71A3-47E0-B953-FD9C2C16D7B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE2CC36-71A3-47E0-B953-FD9C2C16D7B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE2CC36-71A3-47E0-B953-FD9C2C16D7B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE2CC36-71A3-47E0-B953-FD9C2C16D7B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55D10F2D-B714-4D67-83C1-A201EA64D123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55D10F2D-B714-4D67-83C1-A201EA64D123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55D10F2D-B714-4D67-83C1-A201EA64D123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55D10F2D-B714-4D67-83C1-A201EA64D123}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C686970A-9C75-4234-B6EF-F07D221D5602}
+	EndGlobalSection
+EndGlobal

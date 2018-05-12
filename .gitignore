@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/RPI.WiringPiWrapper/.vs/RPI.WiringPiWrapper/v15
+/RPI.WiringPiWrapper/RPI.WiringPiWrapper/bin/Debug/netstandard2.0
+/RPI.WiringPiWrapper/RPI.WiringPiWrapper/obj
+/RPI.WiringPiWrapper/RPI.WiringPiWrapper.Tests/bin/Debug/netstandard2.0
+/RPI.WiringPiWrapper/RPI.WiringPiWrapper.Tests/obj
