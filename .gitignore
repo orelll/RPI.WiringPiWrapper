@@ -7,3 +7,10 @@
 /RPI.WiringPiWrapper/RPI.WiringPiWrapper/obj
 /RPI.WiringPiWrapper/RPI.WiringPiWrapper.Tests/bin/Debug/netstandard2.0
 /RPI.WiringPiWrapper/RPI.WiringPiWrapper.Tests/obj
+/.vs/RPI.WiringPiWrapper/v15/Server/sqlite3
+/RPI.WiringPiWrapper/bin/Debug/netstandard2.0
+/RPI.WiringPiWrapper/obj/Debug/netstandard2.0
+/RPI.WiringPiWrapper/obj
+/RPI.WiringPiWrapper.Tests/bin/Debug/netcoreapp2.0
+/RPI.WiringPiWrapper.Tests/obj/Debug/netcoreapp2.0
+/RPI.WiringPiWrapper.Tests/obj
