@@ -1,6 +1,7 @@
+using RPI.WiringPiWrapper.Helpers;
 using System;
 using System.Threading;
-using static rpi.wiringpiwrapper.GPIO;
+using static RPI.WiringPiWrapper.Helpers.GPIO;
 
 namespace rpi.wiringpiwrapper
 {

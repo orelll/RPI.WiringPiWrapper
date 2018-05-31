@@ -1,4 +1,6 @@
 ﻿using rpi.wiringpiwrapper;
+using RPI.WiringPiWrapper.Helpers;
+using RPI.WiringPiWrapper.Helpers.Tools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,10 +13,12 @@ namespace RPI.WiringPiWrapper.SonicSensor
     {
         private int _echo_pin = 7;
         private int _trigger_pin = 0;
+        private HighPrecisionTimer2 _highPrecisionTimer;
 
         public SonicSensorDriver()
         {
             Console.WriteLine($"Sonic sensor driver configured. Echo: {_echo_pin}, trigger: {_trigger_pin}");
+            _highPrecisionTimer = new HighPrecisionTimer2();
         }
 
         public SonicSensorDriver(int echoPin, int triggerPin)
@@ -39,55 +43,36 @@ namespace RPI.WiringPiWrapper.SonicSensor
 
         public double GetDistance()
         {
+            var stopwatch = new Stopwatch();
+            
+            Console.WriteLine("Triggering device...");
             // Clears the trigPin
             GPIO.digitalWrite(_trigger_pin, (int)GPIO.GPIOpinvalue.Low);
-            Sleeper(2);
-
+            _highPrecisionTimer.SleepMicroseconds(5);
+            
             // Sets the trigPin on HIGH state for 10 micro seconds
             GPIO.digitalWrite(_trigger_pin, (int)GPIO.GPIOpinvalue.High);
-            Sleeper(10);
+            _highPrecisionTimer.SleepMicroseconds(10);
             GPIO.digitalWrite(_trigger_pin, (int)GPIO.GPIOpinvalue.Low);
 
-            var stopwatch = new Stopwatch();
+            while (GPIO.digitalRead(_echo_pin) != (int)GPIO.GPIOpinvalue.High) { };
+            //var elapsedEchoTime = HighPrecisionTimer2.GetTimeUntilNextEdge(_echo_pin, (int)GPIO.GPIOpinvalue.High);
             stopwatch.Start();
 
             // Reads the echoPin, returns the sound wave travel time in microseconds
-            while (GPIO.digitalRead(_echo_pin) == (int)GPIO.GPIOpinvalue.Low) { }
+            while (GPIO.digitalRead(_echo_pin) == (int)GPIO.GPIOpinvalue.High) { }
 
             stopwatch.Stop();
-
-            var distance = ConvertTicksToDistance(stopwatch.ElapsedTicks);
-
+            var echSleptTime = stopwatch.Elapsed.TotalMilliseconds;
+            var distance = echSleptTime * 343 / 2;
             // Prints the distance on the Serial Monitor
+            Console.WriteLine($"Elapsed time{echSleptTime} [ms] timestamp: {DateTime.Now.Second}");
             Console.WriteLine($"Measured distance: {distance}");
 
             return distance;
         }
 
-        private double ConvertTicksToDistance(long ticks)
-        {
-            var multipler = TimeSpan.TicksPerMillisecond;
-            var ticksAsMicroseconds = ticks / multipler;
-            Console.WriteLine($"ticks multipler: {multipler}");
-
-            // Calculating the distance
-            var distance = ticksAsMicroseconds * 0.034 / 2;
-
-            return distance;
-        }
-
-        private void Sleeper(int microseconds)
-        {
-            var multipler = TimeSpan.TicksPerMillisecond;
-            var ticksToWait = microseconds * multipler / 1000;
-
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            while (stopwatch.ElapsedTicks <= ticksToWait) { }
-
-            stopwatch.Stop();
-            Console.WriteLine($"Stopwatch sleeper: {ticksToWait} vs {stopwatch.ElapsedTicks}");
-        }
+       
 
     }
 }

@@ -1,9 +1,10 @@
 ﻿using RPI.WiringPiWrapper;
+using RPI.WiringPiWrapper.Helpers;
 using RPI.WiringPiWrapper.ServoDriver;
 using RPI.WiringPiWrapper.SonicSensor;
 using System;
 using System.Threading;
-using static rpi.wiringpiwrapper.GPIO;
+using static RPI.WiringPiWrapper.Helpers.GPIO;
 
 namespace rpi.wiringpiwrapper
 {
@@ -31,10 +32,10 @@ namespace rpi.wiringpiwrapper
         {
             var readedLine = string.Empty;
             var sonicSensorDriver = new SonicSensorDriver();
+                sonicSensorDriver.Configure();
 
             do
             {
-                sonicSensorDriver.Configure();
                 sonicSensorDriver.GetDistance();
 
                 Thread.Sleep(500);
@@ -113,7 +114,7 @@ namespace rpi.wiringpiwrapper
 
         private static int InitGPIO()
         {
-            var gpioResponse = rpi.wiringpiwrapper.Init.WiringPiSetup();
+            var gpioResponse = Init.WiringPiSetup();
 
             return gpioResponse;
         }

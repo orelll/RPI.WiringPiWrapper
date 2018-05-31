@@ -1,4 +1,5 @@
 ﻿using rpi.wiringpiwrapper;
+using RPI.WiringPiWrapper.Helpers;
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading;

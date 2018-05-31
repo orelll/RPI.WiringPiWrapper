@@ -13,4 +13,9 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RPI.WiringPiWrapper.Helpers\RPI.WiringPiWrapper.Helpers.csproj" />
+    <ProjectReference Include="..\RPI.WiringPiWrapper\RPI.WiringPiWrapper.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -11,3 +11,7 @@
 /RPI.WiringPiWrapper.Tests/bin/Debug/netcoreapp2.0
 /RPI.WiringPiWrapper.Tests/obj/Debug/netcoreapp2.0
 /RPI.WiringPiWrapper.Tests/obj
+/RPI.WiringPiWrapper.Helpers/bin
+/RPI.WiringPiWrapper.Helpers/obj/Debug/netcoreapp2.0
+/RPI.WiringPiWrapper.Helpers/obj/Release/netcoreapp2.0
+/RPI.WiringPiWrapper.Helpers/obj

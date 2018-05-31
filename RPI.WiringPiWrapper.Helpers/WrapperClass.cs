@@ -42,7 +42,7 @@ using System.Runtime.InteropServices;
 using System.Linq;
 using System.Text;
 
-namespace rpi.wiringpiwrapper
+namespace RPI.WiringPiWrapper.Helpers
 {
     /// <summary>
     /// Used to initialise Gordon's library, there's 4 different ways to initialise and we're going to support all 4
