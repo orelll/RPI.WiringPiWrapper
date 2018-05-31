@@ -7,4 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RPI.WiringPiWrapper.Helpers\RPI.WiringPiWrapper.Helpers.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Devices\LCD_Display\Exceptions\" />
+  </ItemGroup>
 </Project>

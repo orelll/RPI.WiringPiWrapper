@@ -1,5 +1,10 @@
 ﻿using RPI.WiringPiWrapper;
+using RPI.WiringPiWrapper.Devices.GPIO;
+using RPI.WiringPiWrapper.Devices.LCD_Display;
 using RPI.WiringPiWrapper.Helpers;
+using RPI.WiringPiWrapper.Helpers.Interfaces;
+using RPI.WiringPiWrapper.Helpers.Tools;
+using RPI.WiringPiWrapper.Helpers.Tools.Loggers;
 using RPI.WiringPiWrapper.ServoDriver;
 using RPI.WiringPiWrapper.SonicSensor;
 using System;
@@ -10,22 +15,34 @@ namespace rpi.wiringpiwrapper
 {
     internal class Program
     {
-        private static readonly int _testingPin = 1;
+        private static GPIOClass _gpioClass;
 
         private static void Main(string[] args)
         {
             Console.WriteLine("Initializing GPIO...");
-            if (InitGPIO() == -1)
-            {
-                Console.WriteLine("GPIO initialization failed");
-                return;
-            }
 
-            DoSonicMeasuring();
+            var timer = new TimerClass();
+            var logger = new ConsoleLogger();
+            _gpioClass = new GPIOClass(logger);
+
+            var lcdDisplay = GetLCDDisplay();
+            _gpioClass.AddDevice(lcdDisplay);
+
+            DoMessaging(lcdDisplay);
 
             Console.WriteLine("All job is done");
             Console.ReadKey();
             GPIO.digitalWrite(1, (int)GPIOpinvalue.Low);
+        }
+
+        private static LCD_Display GetLCDDisplay()
+        {
+            var timer = new TimerClass();
+            var logger = new ConsoleLogger();
+
+            var display = new LCD_Display(timer, logger);
+
+            return display;
         }
 
         private static void DoSonicMeasuring()
@@ -43,15 +60,14 @@ namespace rpi.wiringpiwrapper
             while (true);
         }
 
-        private static void DoMessaging()
+        private static void DoMessaging(LCD_Display lcdDisplay)
         {
             var readedLine = string.Empty;
-            var mylcd = new LcdClass();
-
+            
             do
             {
-                mylcd.lcd_clear();
-                mylcd.lcd_display_string(readedLine);
+                lcdDisplay.Clear();
+                lcdDisplay.DisplayString(readedLine);
 
                 Console.WriteLine("Type any text:");
                 readedLine = Console.ReadLine();
@@ -78,38 +94,14 @@ namespace rpi.wiringpiwrapper
                 driverHandler.SetPWM(int.Parse(readedValue));
             }
         }
-
-        //private static void DoPWM()
-        //{
-        //    const int servoMin = 1;  // Min pulse length out of 4095
-        //    const int servoMax = 4000;  // Max pulse length out of 4095
-        //    Console.WriteLine("Initializing pwm driver...");
-        //    var pwmDriver = new PWMServoDriver2();
-        //    pwmDriver.pca9685Setup(120, 0x40, 50);
-        //    Console.WriteLine("Done.");
-        //    Console.ReadKey();
-
-        //    for (ushort i = servoMin; i < servoMax; i++)
-        //    {
-        //        Console.WriteLine($"Setting value {i}");
-        //        pwmDriver.myPwmWrite(1, 1);
-        //        Thread.Sleep(10);
-        //    }
-        //    for (ushort i = servoMax; i > servoMin; i--)
-        //    {
-        //        Console.WriteLine($"Setting value {i}");
-        //        pwmDriver.myPwmWrite(1, 0);
-        //        Thread.Sleep(10);
-        //    }
-        //}
-
+        
         private void DoDisco()
         {
-            var pinmode = GPIOpinmode.Output;
-            GPIO.pinMode(_testingPin, (int)pinmode);
+            //var pinmode = GPIOpinmode.Output;
+            //GPIO.pinMode(_testingPin, (int)pinmode);
 
-            Console.WriteLine("Staring blinker");
-            MakeSimpleBlinkingLoop(150);
+            //Console.WriteLine("Staring blinker");
+            //MakeSimpleBlinkingLoop(150);
         }
 
         private static int InitGPIO()
@@ -121,18 +113,18 @@ namespace rpi.wiringpiwrapper
 
         private static void MakeSimpleBlinkingLoop(int iterarions)
         {
-            for (int i = 0; i < iterarions; i++)
-            {
-                var delay = GetDelayTime(i);
+            //for (int i = 0; i < iterarions; i++)
+            //{
+            //    var delay = GetDelayTime(i);
 
-                Console.WriteLine($"Setting pin {_testingPin} to state: {GPIOpinvalue.High}");
-                GPIO.digitalWrite(_testingPin, (int)GPIOpinvalue.High);
-                Thread.Sleep(delay);
+            //    Console.WriteLine($"Setting pin {_testingPin} to state: {GPIOpinvalue.High}");
+            //    GPIO.digitalWrite(_testingPin, (int)GPIOpinvalue.High);
+            //    Thread.Sleep(delay);
 
-                Console.WriteLine($"Setting pin {_testingPin} to state: {GPIOpinvalue.Low}");
-                GPIO.digitalWrite(_testingPin, (int)GPIOpinvalue.Low);
-                Thread.Sleep(delay);
-            }
+            //    Console.WriteLine($"Setting pin {_testingPin} to state: {GPIOpinvalue.Low}");
+            //    GPIO.digitalWrite(_testingPin, (int)GPIOpinvalue.Low);
+            //    Thread.Sleep(delay);
+            //}
         }
 
         private static int GetDelayTime(int iteration)
