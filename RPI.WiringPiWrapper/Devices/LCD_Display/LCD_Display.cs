@@ -1,5 +1,6 @@
 ﻿using RPI.WiringPiWrapper.Hardware;
 using RPI.WiringPiWrapper.Interfaces;
+using System.Collections.Generic;
 
 namespace RPI.WiringPiWrapper.Devices.LCD_Display
 {

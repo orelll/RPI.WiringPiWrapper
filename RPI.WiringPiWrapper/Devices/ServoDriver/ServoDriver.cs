@@ -1,13 +1,17 @@
-﻿using System;
-using System.Threading;
+﻿using RPI.WiringPiWrapper.Hardware;
+using RPI.WiringPiWrapper.Interfaces;
+using RPI.WiringPiWrapper.Tools;
+using RPI.WiringPiWrapper.Tools.Loggers;
 using RPI.WiringPiWrapper.WiringPi;
+using System;
+using System.Threading;
 
 namespace RPI.WiringPiWrapper.Devices.ServoDriver
 {
     /// <summary>
     /// Used to initialise Gordon's library, there's 4 different ways to initialise and we're going to support all 4
     /// </summary>
-    public class ServoDriver
+    public class ServoDriver : I2CDeviceBase
     {
         private const byte REGISTER1 = 0x00;
         private const byte REGISTER2 = 0x01;
@@ -29,18 +33,13 @@ namespace RPI.WiringPiWrapper.Devices.ServoDriver
 
         private int _deviceHandler;
 
-        public ServoDriver(int deviceAddress = 0x40)
+        public ServoDriver(int deviceAddress, ILogger logger, ITimer timer) : base(deviceAddress, logger, timer)
         {
-            Console.WriteLine($"Initializing servo driver using {deviceAddress} address");
-            _deviceHandler = I2C.WiringPiI2CSetup(deviceAddress);
+            logger.WriteMessage($"Initializing servo driver using {deviceAddress} address");
+        }
 
-            if (_deviceHandler < 1)
-            {
-                Console.WriteLine($"Error during obtaining device handler");
-                return;
-            }
-
-            Console.WriteLine($"End of constructor. Device handler: ({ _deviceHandler:X4})");
+        public ServoDriver() : this(0x40, new DummyLogger(), new TimerClass())
+        {
         }
 
         public void Configure()

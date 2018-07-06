@@ -1,7 +1,8 @@
-﻿using System;
-using RPI.WiringPiWrapper.Exceptions;
+﻿using RPI.WiringPiWrapper.Exceptions;
 using RPI.WiringPiWrapper.Interfaces;
 using RPI.WiringPiWrapper.WiringPi;
+using System;
+using System.Collections.Generic;
 
 namespace RPI.WiringPiWrapper.Hardware
 {
@@ -20,7 +21,7 @@ namespace RPI.WiringPiWrapper.Hardware
 
             if (_deviceHandler < 1) throw new I2CInitializationException(_addr);
 
-            _log.WriteMessage($"Obtained device handler: {_deviceHandler}");
+            _log.WriteMessage($"Obtained device handler: {_deviceHandler:X4}");
         }
 
         //# Write a single command
@@ -35,5 +36,10 @@ namespace RPI.WiringPiWrapper.Hardware
         {
             return I2C.WiringPiI2CRead(_deviceHandler);
         }
+
+        /// <summary>
+        /// return SDA && SCL pins
+        /// </summary>
+        public new IEnumerable<int> ListUsedPins => new List<int> { 8, 9 };
     }
 }
