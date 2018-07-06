@@ -15,3 +15,5 @@
 /RPI.WiringPiWrapper.Helpers/obj/Debug/netcoreapp2.0
 /RPI.WiringPiWrapper.Helpers/obj/Release/netcoreapp2.0
 /RPI.WiringPiWrapper.Helpers/obj
+/RPI.WiringPiWrapper.Runner/bin/Debug/netcoreapp2.0
+/RPI.WiringPiWrapper.Runner/obj

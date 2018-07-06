@@ -1,12 +1,9 @@
-﻿using RPI.WiringPiWrapper.Helpers.Bases;
-using RPI.WiringPiWrapper.Helpers.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using RPI.WiringPiWrapper.Hardware;
+using RPI.WiringPiWrapper.Interfaces;
 
 namespace RPI.WiringPiWrapper.Devices.LCD_Display
 {
-    public class LCD_Display:I2CDeviceBase
+    public class LCD_Display : I2CDeviceBase
     {
         #region commands
 
@@ -61,7 +58,7 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
         private int Rw = 0b00000010;// # Read/Write bit
         private int Rs = 0b00000001;// # Register select bit
 
-        #endregion
+        #endregion commands
 
         public LCD_Display(ITimer timer, ILogger logger, int address = 0x3f) : base(address, logger, timer)
         {
@@ -93,7 +90,6 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
             WriteCommand(((data & ~En) | LCD_BACKLIGHT));
             _timer.SleepMiliseconds(1);
         }
-
 
         private void WriteFourBits(int data)
         {
