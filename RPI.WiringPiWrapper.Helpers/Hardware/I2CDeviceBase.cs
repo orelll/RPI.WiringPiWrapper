@@ -1,6 +1,7 @@
 ﻿using RPI.WiringPiWrapper.Helpers.Exceptions;
 using RPI.WiringPiWrapper.Helpers.Interfaces;
 using System;
+using RPI.WiringPiWrapper.Base.WiringPi;
 
 namespace RPI.WiringPiWrapper.Helpers.Bases
 {
@@ -16,7 +17,7 @@ namespace RPI.WiringPiWrapper.Helpers.Bases
             _timer = timer;
 
             _addr = addr;
-            _deviceHandler = I2C.wiringPiI2CSetup(_addr);
+            _deviceHandler = I2C.WiringPiI2CSetup(_addr);
 
             if (_deviceHandler < 1) throw new I2CInitializationException(_addr);
 
@@ -26,14 +27,14 @@ namespace RPI.WiringPiWrapper.Helpers.Bases
         //# Write a single command
         public void WriteCommand(int cmd)
         {
-            I2C.wiringPiI2CWrite(_deviceHandler, cmd);
+            I2C.WiringPiI2CWrite(_deviceHandler, cmd);
             _timer.SleepMiliseconds(1);
         }
 
         //# Read a single byte
         public int Read()
         {
-            return I2C.wiringPiI2CRead(_deviceHandler);
+            return I2C.WiringPiI2CRead(_deviceHandler);
         }
     }
 }

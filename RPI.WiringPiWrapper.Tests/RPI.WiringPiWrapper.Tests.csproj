@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RPI.WiringPiWrapper.Helpers\RPI.WiringPiWrapper.Helpers.csproj" />
+    <ProjectReference Include="..\RPI.WiringPiWrapper.Helpers\RPI.WiringPiWrapper.Base.csproj" />
     <ProjectReference Include="..\RPI.WiringPiWrapper\RPI.WiringPiWrapper.csproj" />
   </ItemGroup>
 

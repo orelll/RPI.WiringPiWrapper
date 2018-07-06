@@ -1,8 +1,6 @@
-﻿using RPI.WiringPiWrapper.Helpers.Interfaces;
+﻿using RPI.WiringPiWrapper.Base.WiringPi;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
 
 namespace RPI.WiringPiWrapper.Helpers.Tools
@@ -22,11 +20,11 @@ namespace RPI.WiringPiWrapper.Helpers.Tools
         {
             stopWatch.Reset();
 
-            while (GPIO.digitalRead(pin) != stateToWaitFor) { };
+            while (GPIO.DigitalRead(pin) != stateToWaitFor) { };
 
             stopWatch.Start();
 
-            while (GPIO.digitalRead(pin) == stateToWaitFor) { };
+            while (GPIO.DigitalRead(pin) == stateToWaitFor) { };
 
             stopWatch.Stop();
 

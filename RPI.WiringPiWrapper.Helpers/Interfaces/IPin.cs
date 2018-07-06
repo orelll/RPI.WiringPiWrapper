@@ -1,4 +1,6 @@
-﻿namespace RPI.WiringPiWrapper.Helpers.Interfaces
+﻿using RPI.WiringPiWrapper.Base.WiringPi;
+
+namespace RPI.WiringPiWrapper.Helpers.Interfaces
 {
     public interface IPin
     {

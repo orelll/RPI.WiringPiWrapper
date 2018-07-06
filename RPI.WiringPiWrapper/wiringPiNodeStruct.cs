@@ -27,15 +27,15 @@ namespace RPI.WiringPiWrapper
             this.pinMax = pinAll;
         }
 
-        //void (* pinMode) (private struct wiringPiNodeStruct *node, private int pin, private int mode) ;
+        //void (* PinMode) (private struct wiringPiNodeStruct *node, private int pin, private int mode) ;
 
-        //void (* pullUpDnControl) (private struct wiringPiNodeStruct *node, private int pin, private int mode) ;
+        //void (* PullUpDnControl) (private struct wiringPiNodeStruct *node, private int pin, private int mode) ;
 
-        //int (* digitalRead) (private struct wiringPiNodeStruct *node, private int pin) ;
+        //int (* DigitalRead) (private struct wiringPiNodeStruct *node, private int pin) ;
 
-        //void (* digitalWrite) (private struct wiringPiNodeStruct *node, private int pin, private int value) ;
+        //void (* DigitalWrite) (private struct wiringPiNodeStruct *node, private int pin, private int value) ;
 
-        //void (* pwmWrite) (private struct wiringPiNodeStruct *node, private int pin, private int value) ;
+        //void (* PWMWrite) (private struct wiringPiNodeStruct *node, private int pin, private int value) ;
 
         //int (* analogRead) (private struct wiringPiNodeStruct *node, private int pin) ;
 

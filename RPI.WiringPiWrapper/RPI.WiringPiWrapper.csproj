@@ -5,9 +5,9 @@
     <RuntimeIdentifiers>win10-arm;ubuntu.16.04-arm;linux-arm</RuntimeIdentifiers>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RPI.WiringPiWrapper.Helpers\RPI.WiringPiWrapper.Helpers.csproj" />
+    <Folder Include="Devices\LCD_Display\Exceptions\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Devices\LCD_Display\Exceptions\" />
+    <ProjectReference Include="..\RPI.WiringPiWrapper.Helpers\RPI.WiringPiWrapper.Base.csproj" />
   </ItemGroup>
 </Project>

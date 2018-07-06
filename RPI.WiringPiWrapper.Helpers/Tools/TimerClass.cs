@@ -1,13 +1,12 @@
-﻿using RPI.WiringPiWrapper.Helpers.Interfaces;
+﻿using RPI.WiringPiWrapper.Base.WiringPi;
+using RPI.WiringPiWrapper.Helpers.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
 
 namespace RPI.WiringPiWrapper.Helpers.Tools
 {
-    public class TimerClass:ITimer
+    public class TimerClass : ITimer
     {
         private static ManualResetEvent _manualResetEvent;
         private static Stopwatch _stopWatch;
@@ -40,11 +39,11 @@ namespace RPI.WiringPiWrapper.Helpers.Tools
         {
             _stopWatch.Reset();
 
-            while (GPIO.digitalRead(pin) != stateToWaitFor) { };
+            while (GPIO.DigitalRead(pin) != stateToWaitFor) { };
 
             _stopWatch.Start();
 
-            while (GPIO.digitalRead(pin) == stateToWaitFor) { };
+            while (GPIO.DigitalRead(pin) == stateToWaitFor) { };
 
             _stopWatch.Stop();
 

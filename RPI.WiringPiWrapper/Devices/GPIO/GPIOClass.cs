@@ -4,6 +4,7 @@ using RPI.WiringPiWrapper.Helpers.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RPI.WiringPiWrapper.Base.WiringPi;
 
 namespace RPI.WiringPiWrapper.Devices.GPIO
 {
