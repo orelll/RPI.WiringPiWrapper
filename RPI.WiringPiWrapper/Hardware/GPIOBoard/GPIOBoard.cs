@@ -4,12 +4,14 @@ using System.Linq;
 using RPI.WiringPiWrapper.Hardware.GPIOBoard.Exceptions;
 using RPI.WiringPiWrapper.Interfaces;
 using RPI.WiringPiWrapper.WiringPi;
+using RPI.WiringPiWrapper.WiringPi.Wrappers.Init;
 
 namespace RPI.WiringPiWrapper.Hardware.GPIOBoard
 {
     public class GPIOBoard
     {
         private ILogger _log;
+        private IWrapInit _init;
 
         public IList<IDevice> DevicesList => _devicesList;
         private IList<IDevice> _devicesList;
@@ -17,16 +19,17 @@ namespace RPI.WiringPiWrapper.Hardware.GPIOBoard
         public IList<IPin> PinsList => _pinsList;
         private IList<IPin> _pinsList;
 
-        public GPIOBoard(ILogger log)
+        public GPIOBoard(ILogger log, IWrapInit init)
         {
             _log = log ?? throw new ArgumentNullException(nameof(log));
+            _init = init ?? throw new ArgumentNullException(nameof(init));
 
             Initialize();
         }
 
         private void Initialize()
         {
-            if (Init.WiringPiSetup() == -1)
+            if (_init.WiringPiSetup() == -1)
             {
                 throw new GPIOInitializationException();
             }

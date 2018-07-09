@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+﻿using RPI.WiringPiWrapper.Tools;
+using System;
 using Xunit;
-using tools = RPI.WiringPiWrapper.Helpers.Tools;
 
 namespace RPI.WiringPiWrapper.Tests.HelpersTests.HighPrecisionTimer
 {
@@ -13,7 +10,7 @@ namespace RPI.WiringPiWrapper.Tests.HelpersTests.HighPrecisionTimer
         public void When_Constructor_IsCalled_Then_NoExceptions_AreThrown()
         {
             //a
-            var timer = new tools.HighPrecisionTimer2();
+            var timer = new HighPrecisionTimer2();
 
             //aa
             //aaa
@@ -23,12 +20,12 @@ namespace RPI.WiringPiWrapper.Tests.HelpersTests.HighPrecisionTimer
         public void When_Sleep_IsCalled_For_NusThen_Sleep_IsProperLong()
         {
             //a
-            var highPrecisionTimer = new tools.HighPrecisionTimer2();
+            var highPrecisionTimer = new HighPrecisionTimer2();
             var usToWait = new Random().Next(1, 150);
-            
+
             //aa
             highPrecisionTimer.SleepMicroseconds(usToWait);
-            
+
             //aaa
             Assert.Equal(usToWait, 0);
         }
@@ -37,9 +34,9 @@ namespace RPI.WiringPiWrapper.Tests.HelpersTests.HighPrecisionTimer
         public void When_TicksToDistanceConverter_IsCalled_For_NTicks_Then_ReturnValue_IsProperLong()
         {
             //a
-            var highPrecisionTimer = new tools.HighPrecisionTimer2();
+            var highPrecisionTimer = new HighPrecisionTimer2();
             var sleptTicks = new Random().Next(1, 100000);
-            
+
             //aa
             var calculatedDistance = highPrecisionTimer.ConvertTicksToDistance(sleptTicks);
 
