@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using RPI.WiringPiWrapper.Interfaces;
-using RPI.WiringPiWrapper.Tools.Loggers;
+using RPI.WiringPiWrapper.Helpers.Loggers;
 
 namespace RPI.WiringPiWrapper.Hardware
 {

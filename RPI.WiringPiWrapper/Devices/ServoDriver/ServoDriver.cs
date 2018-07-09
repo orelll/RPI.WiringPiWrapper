@@ -1,7 +1,7 @@
 ﻿using RPI.WiringPiWrapper.Hardware;
 using RPI.WiringPiWrapper.Interfaces;
-using RPI.WiringPiWrapper.Tools;
-using RPI.WiringPiWrapper.Tools.Loggers;
+using RPI.WiringPiWrapper.Helpers;
+using RPI.WiringPiWrapper.Helpers.Loggers;
 using RPI.WiringPiWrapper.WiringPi;
 using System;
 using System.Threading;

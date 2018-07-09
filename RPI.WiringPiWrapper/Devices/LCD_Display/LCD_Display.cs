@@ -1,10 +1,9 @@
 ﻿using RPI.WiringPiWrapper.Hardware;
 using RPI.WiringPiWrapper.Interfaces;
-using System.Collections.Generic;
 
 namespace RPI.WiringPiWrapper.Devices.LCD_Display
 {
-    public class LCD_Display : I2CDeviceBase
+    public class LCDDisplay : I2CDeviceBase
     {
         #region commands
 
@@ -61,7 +60,7 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
 
         #endregion commands
 
-        public LCD_Display(ITimer timer, ILogger logger, int address = 0x3f) : base(address, logger, timer)
+        public LCDDisplay(ITimer timer, ILogger logger, int address = 0x3f) : base(address, logger, timer)
         {
             Initialize();
         }
