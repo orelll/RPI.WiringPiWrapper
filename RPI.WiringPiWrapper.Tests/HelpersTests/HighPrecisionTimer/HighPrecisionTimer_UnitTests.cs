@@ -1,6 +1,9 @@
 ﻿using RPI.WiringPiWrapper.Helpers;
 using System;
+using AutoFixture;
+using RPI.WiringPiWrapper.WiringPi.Wrappers.GPIO;
 using Xunit;
+using AutoFixture.AutoMoq;
 
 namespace RPI.WiringPiWrapper.Tests.HelpersTests.HighPrecisionTimer
 {
@@ -10,7 +13,8 @@ namespace RPI.WiringPiWrapper.Tests.HelpersTests.HighPrecisionTimer
         public void When_Constructor_IsCalled_Then_NoExceptions_AreThrown()
         {
             //a
-            var timer = new HighPrecisionTimer2();
+            var gpioWrapper = new GPIOWrapper();
+            var timer = new HighPrecisionTimer2(gpioWrapper);
 
             //aa
             //aaa
@@ -46,7 +50,12 @@ namespace RPI.WiringPiWrapper.Tests.HelpersTests.HighPrecisionTimer
         public void When_TicksToDistanceConverter_IsCalled_For_NTicks_Then_ReturnValue_IsProperLong()
         {
             //a
-            var highPrecisionTimer = new HighPrecisionTimer2();
+            var fixture = new Fixture();
+            fixture.Customize(new AutoMoqCustomization{ConfigureMembers = true});
+
+            var wrapper = fixture.Create<IWrapGPIO>();
+            var gpioWrapper = new GPIOWrapper();
+            var highPrecisionTimer = new HighPrecisionTimer2(gpioWrapper);
             var sleptTicks = new Random().Next(1, 100000);
 
             //aa
