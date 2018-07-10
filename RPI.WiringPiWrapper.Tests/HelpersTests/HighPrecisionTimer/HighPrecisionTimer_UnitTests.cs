@@ -1,7 +1,5 @@
-﻿using RPI.WiringPiWrapper.Tools;
+﻿using RPI.WiringPiWrapper.Helpers;
 using System;
-using System.Diagnostics;
-using RPI.WiringPiWrapper.Helpers;
 using Xunit;
 
 namespace RPI.WiringPiWrapper.Tests.HelpersTests.HighPrecisionTimer

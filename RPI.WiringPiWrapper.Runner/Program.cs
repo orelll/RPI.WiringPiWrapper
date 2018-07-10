@@ -5,8 +5,7 @@ using RPI.WiringPiWrapper.Devices.ServoDriver;
 using RPI.WiringPiWrapper.Devices.SonicSensor;
 using RPI.WiringPiWrapper.Hardware.GPIOBoard;
 using RPI.WiringPiWrapper.Helpers;
-using RPI.WiringPiWrapper.Tools;
-using RPI.WiringPiWrapper.Tools.Loggers;
+using RPI.WiringPiWrapper.Helpers.Loggers;
 using RPI.WiringPiWrapper.WiringPi;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Init;
 

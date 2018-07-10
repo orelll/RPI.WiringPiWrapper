@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Folder Include="Devices\LCD_Display\Exceptions\" />
-    <Folder Include="Helpers\Loggers\" />
   </ItemGroup>
 
 </Project>

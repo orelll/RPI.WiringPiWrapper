@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using RPI.WiringPiWrapper.Helpers;
-using RPI.WiringPiWrapper.Tools;
 using RPI.WiringPiWrapper.WiringPi;
 
 namespace RPI.WiringPiWrapper.Devices.SonicSensor

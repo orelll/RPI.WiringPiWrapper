@@ -1,7 +1,7 @@
 ﻿using RPI.WiringPiWrapper.Hardware.GPIOBoard;
 using System;
 using AutoFixture;
-using RPI.WiringPiWrapper.Tools.Loggers;
+using RPI.WiringPiWrapper.Helpers.Loggers;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Init;
 using Xunit;
 
