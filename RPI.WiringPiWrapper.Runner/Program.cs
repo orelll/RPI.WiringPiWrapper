@@ -7,6 +7,7 @@ using RPI.WiringPiWrapper.Hardware.GPIOBoard;
 using RPI.WiringPiWrapper.Helpers;
 using RPI.WiringPiWrapper.Helpers.Loggers;
 using RPI.WiringPiWrapper.WiringPi;
+using RPI.WiringPiWrapper.WiringPi.Wrappers.GPIO;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Init;
 
 namespace RPI.WiringPiWrapper.Runner
@@ -31,7 +32,6 @@ namespace RPI.WiringPiWrapper.Runner
 
             Console.WriteLine("All job is done");
             Console.ReadKey();
-            GPIO.DigitalWrite(1, (int)GPIO.GPIOpinvalue.Low);
         }
 
         private static LcdDisplay GetLCDDisplay()
@@ -46,8 +46,9 @@ namespace RPI.WiringPiWrapper.Runner
 
         private static void DoSonicMeasuring()
         {
-            var readedLine = string.Empty;
-            var sonicSensorDriver = new SonicSensorDriver();
+            var gpioWrapper = new GPIOWrapper();
+
+            var sonicSensorDriver = new SonicSensorDriver(gpioWrapper);
                 sonicSensorDriver.Configure();
 
             do

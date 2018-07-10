@@ -2,24 +2,25 @@
 using System.Diagnostics;
 using RPI.WiringPiWrapper.Helpers;
 using RPI.WiringPiWrapper.WiringPi;
+using RPI.WiringPiWrapper.WiringPi.Wrappers.GPIO;
 
 namespace RPI.WiringPiWrapper.Devices.SonicSensor
 {
     public class SonicSensorDriver
     {
-        private readonly int _echoPin = 7;
-        private readonly int _triggerPin = 0;
+        private readonly int _echoPin;
+        private readonly int _triggerPin;
+        private readonly IWrapGPIO _gpioWrapper;
 
         private readonly HighPrecisionTimer2 _highPrecisionTimer;
 
-        public SonicSensorDriver()
+        public SonicSensorDriver(IWrapGPIO gpioWrapper):this(echoPin:7, triggerPin:0, gpioWrapper:gpioWrapper)
         {
-            Console.WriteLine($"Sonic sensor driver configured. Echo: {_echoPin}, trigger: {_triggerPin}");
-            _highPrecisionTimer = new HighPrecisionTimer2();
         }
 
-        public SonicSensorDriver(int echoPin, int triggerPin)
+        public SonicSensorDriver(int echoPin, int triggerPin, IWrapGPIO gpioWrapper)
         {
+            _gpioWrapper = gpioWrapper ?? throw new ArgumentNullException(nameof(gpioWrapper));
             _echoPin = echoPin;
             _triggerPin = triggerPin;
 
@@ -30,10 +31,10 @@ namespace RPI.WiringPiWrapper.Devices.SonicSensor
         {
             Console.WriteLine("Starting sonic sensor configuration...");
 
-            GPIO.PinMode(_triggerPin, (int)GPIO.GPIOpinmode.Output);
-            GPIO.PinMode(_echoPin, (int)GPIO.GPIOpinmode.Input);
+            _gpioWrapper.PinMode(_triggerPin, (int)GPIO.GPIOpinmode.Output);
+            _gpioWrapper.PinMode(_echoPin, (int)GPIO.GPIOpinmode.Input);
 
-            GPIO.DigitalWrite(_triggerPin, (int)GPIO.GPIOpinvalue.Low);
+            _gpioWrapper.DigitalWrite(_triggerPin, (int)GPIO.GPIOpinvalue.Low);
 
             Console.WriteLine("Done.");
         }
@@ -44,19 +45,19 @@ namespace RPI.WiringPiWrapper.Devices.SonicSensor
 
             Console.WriteLine("Triggering device...");
             // Clears the trigPin
-            GPIO.DigitalWrite(_triggerPin, (int)GPIO.GPIOpinvalue.Low);
+            _gpioWrapper.DigitalWrite(_triggerPin, (int)GPIO.GPIOpinvalue.Low);
             _highPrecisionTimer.SleepMicroseconds(5);
 
             // Sets the trigPin on HIGH state for 10 micro seconds
-            GPIO.DigitalWrite(_triggerPin, (int)GPIO.GPIOpinvalue.High);
+            _gpioWrapper.DigitalWrite(_triggerPin, (int)GPIO.GPIOpinvalue.High);
             _highPrecisionTimer.SleepMicroseconds(10);
-            GPIO.DigitalWrite(_triggerPin, (int)GPIO.GPIOpinvalue.Low);
+            _gpioWrapper.DigitalWrite(_triggerPin, (int)GPIO.GPIOpinvalue.Low);
 
-            while (GPIO.DigitalRead(_echoPin) != (int)GPIO.GPIOpinvalue.High) { };
+            while (_gpioWrapper.DigitalRead(_echoPin) != (int)GPIO.GPIOpinvalue.High) { };
             stopwatch.Start();
 
             // Reads the echoPin, returns the sound wave travel time in microseconds
-            while (GPIO.DigitalRead(_echoPin) == (int)GPIO.GPIOpinvalue.High) { }
+            while (_gpioWrapper.DigitalRead(_echoPin) == (int)GPIO.GPIOpinvalue.High) { }
 
             stopwatch.Stop();
             var echSleptTime = stopwatch.Elapsed.TotalMilliseconds;
