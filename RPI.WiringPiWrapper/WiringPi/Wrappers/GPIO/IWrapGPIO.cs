@@ -6,7 +6,7 @@
         void PinMode(int pin, int mode);
 
         //Uses Gpio pin numbers
-        void DigitalWrite(int pin, int value);
+        void DigitalWrite(int pin, WiringPi.GPIO.GPIOpinvalue value);
 
         //Uses Gpio pin numbers
         void DigitalWriteByte(int value);

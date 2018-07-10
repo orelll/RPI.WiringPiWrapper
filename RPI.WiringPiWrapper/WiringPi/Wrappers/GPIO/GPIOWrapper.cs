@@ -12,9 +12,9 @@
             return WiringPi.GPIO.DigitalRead(pin);
         }
 
-        public void DigitalWrite(int pin, int value)
+        public void DigitalWrite(int pin, WiringPi.GPIO.GPIOpinvalue value)
         {
-            WiringPi.GPIO.DigitalWrite(pin, value);
+            WiringPi.GPIO.DigitalWrite(pin, (int)value);
         }
 
         public void DigitalWriteByte(int value)

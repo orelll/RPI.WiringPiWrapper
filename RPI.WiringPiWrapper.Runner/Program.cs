@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using RPI.WiringPiWrapper.Devices.LCD_Display;
+﻿using RPI.WiringPiWrapper.Devices.LCD_Display;
 using RPI.WiringPiWrapper.Devices.ServoDriver;
 using RPI.WiringPiWrapper.Devices.SonicSensor;
 using RPI.WiringPiWrapper.Hardware.GPIOBoard;
 using RPI.WiringPiWrapper.Helpers;
 using RPI.WiringPiWrapper.Helpers.Loggers;
-using RPI.WiringPiWrapper.WiringPi;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.GPIO;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Init;
+using RPI.WiringPiWrapper.WiringPi.Wrappers.Timing;
+using System;
+using System.Threading;
 
 namespace RPI.WiringPiWrapper.Runner
 {
@@ -47,9 +47,10 @@ namespace RPI.WiringPiWrapper.Runner
         private static void DoSonicMeasuring()
         {
             var gpioWrapper = new GPIOWrapper();
+            var timingWrapper = new TimingWrapper();
 
-            var sonicSensorDriver = new SonicSensorDriver(gpioWrapper);
-                sonicSensorDriver.Configure();
+            var sonicSensorDriver = new SonicSensorDriver(gpioWrapper, timingWrapper);
+            sonicSensorDriver.Configure();
 
             do
             {
@@ -63,7 +64,7 @@ namespace RPI.WiringPiWrapper.Runner
         private static void DoMessaging(LcdDisplay lcdDisplay)
         {
             var readedLine = string.Empty;
-            
+
             do
             {
                 lcdDisplay.Clear();
@@ -84,7 +85,7 @@ namespace RPI.WiringPiWrapper.Runner
             Console.ReadKey();
 
             string readedValue;
-            while(true)
+            while (true)
             {
                 Console.WriteLine("Give me value:");
                 readedValue = Console.ReadLine();
@@ -94,7 +95,7 @@ namespace RPI.WiringPiWrapper.Runner
                 driverHandler.SetPWM(int.Parse(readedValue));
             }
         }
-        
+
         private void DoDisco()
         {
             //var pinmode = GPIOpinmode.Output;
