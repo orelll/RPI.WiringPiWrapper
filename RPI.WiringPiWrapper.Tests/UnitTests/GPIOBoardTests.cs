@@ -16,9 +16,7 @@ namespace RPI.WiringPiWrapper.Tests.UnitTests
             //a
             Action create = () => new GPIOBoard(null, null);
 
-            //aa
-
-            //aaa
+            //aa, aaa
             Assert.Throws<ArgumentNullException>(create);
         }
 
