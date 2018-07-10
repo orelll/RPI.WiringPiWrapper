@@ -1,5 +1,7 @@
 ﻿using RPI.WiringPiWrapper.Tools;
 using System;
+using System.Diagnostics;
+using RPI.WiringPiWrapper.Helpers;
 using Xunit;
 
 namespace RPI.WiringPiWrapper.Tests.HelpersTests.HighPrecisionTimer
@@ -19,15 +21,27 @@ namespace RPI.WiringPiWrapper.Tests.HelpersTests.HighPrecisionTimer
         [Fact]
         public void When_Sleep_IsCalled_For_NusThen_Sleep_IsProperLong()
         {
-            //a
-            var highPrecisionTimer = new HighPrecisionTimer2();
-            var usToWait = new Random().Next(1, 150);
+            HiResTimer timer = new HiResTimer();
 
-            //aa
-            highPrecisionTimer.SleepMicroseconds(usToWait);
+            // This example shows how to use the high-resolution counter to
+            // time an operation.
 
-            //aaa
-            Assert.Equal(usToWait, 0);
+            // Get counter value before the operation starts.
+            Int64 counterAtStart = timer.Value;
+
+            // Perform an operation that takes a measureable amount of time.
+            for (int count = 0; count < 10000; count++)
+            {
+                count++;
+                count--;
+            }
+
+            // Get counter value when the operation ends.
+            Int64 counterAtEnd = timer.Value;
+
+            // Get time elapsed in tenths of a millisecond.
+            Int64 timeElapsedInTicks = counterAtEnd - counterAtStart;
+            Int64 timeElapseInTenthsOfMilliseconds = (timeElapsedInTicks * 10000) / timer.Frequency;
         }
 
         [Fact]

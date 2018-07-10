@@ -3,64 +3,64 @@ using RPI.WiringPiWrapper.Interfaces;
 
 namespace RPI.WiringPiWrapper.Devices.LCD_Display
 {
-    public class LCDDisplay : I2CDeviceBase
+    public class LcdDisplay : I2CDeviceBase
     {
         #region commands
 
-        private int LCD_CLEARDISPLAY = 0x01;
+        private int _lcdCleardisplay = 0x01;
 
-        private int LCD_RETURNHOME = 0x02;
-        private int LCD_ENTRYMODESET = 0x04;
-        private int LCD_DISPLAYCONTROL = 0x08;
-        private int LCD_CURSORSHIFT = 0x10;
-        private int LCD_FUNCTIONSET = 0x20;
-        private int LCD_SETCGRAMADDR = 0x40;
-        private int LCD_SETDDRAMADDR = 0x80;
+        private int _lcdReturnhome = 0x02;
+        private int _lcdEntrymodeset = 0x04;
+        private int _lcdDisplaycontrol = 0x08;
+        private int _lcdCursorshift = 0x10;
+        private int _lcdFunctionset = 0x20;
+        private int _lcdSetcgramaddr = 0x40;
+        private int _lcdSetddramaddr = 0x80;
 
         //# flags for display entry mode
-        private int LCD_ENTRYRIGHT = 0x00;
+        private int _lcdEntryright = 0x00;
 
-        private int LCD_ENTRYLEFT = 0x02;
-        private int LCD_ENTRYSHIFTINCREMENT = 0x01;
-        private int LCD_ENTRYSHIFTDECREMENT = 0x00;
+        private int _lcdEntryleft = 0x02;
+        private int _lcdEntryshiftincrement = 0x01;
+        private int _lcdEntryshiftdecrement = 0x00;
 
         //# flags for display on/off control
-        private int LCD_DISPLAYON = 0x04;
+        private int _lcdDisplayon = 0x04;
 
-        private int LCD_DISPLAYOFF = 0x00;
-        private int LCD_CURSORON = 0x02;
-        private int LCD_CURSOROFF = 0x00;
-        private int LCD_BLINKON = 0x01;
-        private int LCD_BLINKOFF = 0x00;
+        private int _lcdDisplayoff = 0x00;
+        private int _lcdCursoron = 0x02;
+        private int _lcdCursoroff = 0x00;
+        private int _lcdBlinkon = 0x01;
+        private int _lcdBlinkoff = 0x00;
 
         //# flags for display/cursor shift
-        private int LCD_DISPLAYMOVE = 0x08;
+        private int _lcdDisplaymove = 0x08;
 
-        private int LCD_CURSORMOVE = 0x00;
-        private int LCD_MOVERIGHT = 0x04;
-        private int LCD_MOVELEFT = 0x00;
+        private int _lcdCursormove = 0x00;
+        private int _lcdMoveright = 0x04;
+        private int _lcdMoveleft = 0x00;
 
         //# flags for function set
-        private int LCD_8BITMODE = 0x10;
+        private int _lcd_8Bitmode = 0x10;
 
-        private int LCD_4BITMODE = 0x00;
-        private int LCD_2LINE = 0x08;
-        private int LCD_1LINE = 0x00;
-        private int LCD_5x10DOTS = 0x04;
-        private int LCD_5x8DOTS = 0x00;
+        private int _lcd_4Bitmode = 0x00;
+        private int _lcd_2Line = 0x08;
+        private int _lcd_1Line = 0x00;
+        private int _lcd_5X10Dots = 0x04;
+        private int _lcd_5X8Dots = 0x00;
 
         //# flags for backlight control
-        private int LCD_BACKLIGHT = 0x08;
+        private int _lcdBacklight = 0x08;
 
-        private int LCD_NOBACKLIGHT = 0x00;
+        private int _lcdNobacklight = 0x00;
 
-        private int En = 0b00000100;// # Enable bit;
-        private int Rw = 0b00000010;// # Read/Write bit
-        private int Rs = 0b00000001;// # Register select bit
+        private int _en = 0b00000100;// # Enable bit;
+        private int _rw = 0b00000010;// # Read/Write bit
+        private int _rs = 0b00000001;// # Register select bit
 
         #endregion commands
 
-        public LCDDisplay(ITimer timer, ILogger logger, int address = 0x3f) : base(address, logger, timer)
+        public LcdDisplay(ITimer timer, ILogger logger, int address = 0x3f) : base(address, logger, timer)
         {
             Initialize();
         }
@@ -72,10 +72,10 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
             WriteCommand(0x03);
             WriteCommand(0x02);
 
-            WriteCommand(LCD_FUNCTIONSET | LCD_2LINE | LCD_5x8DOTS | LCD_4BITMODE);
-            WriteCommand(LCD_DISPLAYCONTROL | LCD_DISPLAYON);
-            WriteCommand(LCD_CLEARDISPLAY);
-            WriteCommand(LCD_ENTRYMODESET | LCD_ENTRYLEFT);
+            WriteCommand(_lcdFunctionset | _lcd_2Line | _lcd_5X8Dots | _lcd_4Bitmode);
+            WriteCommand(_lcdDisplaycontrol | _lcdDisplayon);
+            WriteCommand(_lcdCleardisplay);
+            WriteCommand(_lcdEntrymodeset | _lcdEntryleft);
             _timer.SleepMiliseconds(1);
         }
 
@@ -85,15 +85,15 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
         /// <param name="data"></param>
         private void Strobe(int data)
         {
-            WriteCommand(data | En | LCD_BACKLIGHT);
+            WriteCommand(data | _en | _lcdBacklight);
             _timer.SleepMiliseconds(1);
-            WriteCommand(((data & ~En) | LCD_BACKLIGHT));
+            WriteCommand(((data & ~_en) | _lcdBacklight));
             _timer.SleepMiliseconds(1);
         }
 
         private void WriteFourBits(int data)
         {
-            WriteCommand(data | LCD_BACKLIGHT);
+            WriteCommand(data | _lcdBacklight);
             Strobe(data);
         }
 
@@ -127,21 +127,21 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
         /// <param name="pos"></param>
         public void DisplayString(string text, int line = 1, int pos = 0)
         {
-            int pos_new = 0;
+            int posNew = 0;
             if (line == 1)
             {
-                pos_new = pos;
+                posNew = pos;
             }
             else if (line == 2)
             {
-                pos_new = 0x40 + pos;
+                posNew = 0x40 + pos;
             }
 
-            Write(0x80 + pos_new);
+            Write(0x80 + posNew);
 
             foreach (var c in text)
             {
-                Write((int)c, Rs);
+                Write((int)c, _rs);
             }
         }
 
@@ -150,8 +150,8 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
         /// </summary>
         public void Clear()
         {
-            Write(LCD_CLEARDISPLAY);
-            Write(LCD_RETURNHOME);
+            Write(_lcdCleardisplay);
+            Write(_lcdReturnhome);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
         /// </summary>
         public void ReturnHome()
         {
-            Write(LCD_RETURNHOME);
+            Write(_lcdReturnhome);
         }
 
         /// <summary>
@@ -170,11 +170,11 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
         {
             if (state == 1)
             {
-                WriteCommand(LCD_BACKLIGHT);
+                WriteCommand(_lcdBacklight);
             }
             else if (state == 0)
             {
-                WriteCommand(LCD_NOBACKLIGHT);
+                WriteCommand(_lcdNobacklight);
             }
         }
     }

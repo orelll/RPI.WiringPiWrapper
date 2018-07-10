@@ -1,9 +1,8 @@
-﻿using RPI.WiringPiWrapper.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
+using RPI.WiringPiWrapper.Interfaces;
+using RPI.WiringPiWrapper.WiringPi;
 
 namespace RPI.WiringPiWrapper.Helpers
 {
@@ -36,19 +35,19 @@ namespace RPI.WiringPiWrapper.Helpers
                  TimeSpan.FromSeconds((double)secondsToSleep));
         }
 
-        public double GetMilisecondsUntilNextEdge(IPin pin, GPIO.GPIOpinvalue stateToWaitFor)
+        public static double GetTimeUntilNextEdge(int pin, int stateToWaitFor)
         {
             _stopWatch.Reset();
 
-            while (pin.Value != stateToWaitFor) { };
+            while (GPIO.DigitalRead(pin) != stateToWaitFor) { };
 
             _stopWatch.Start();
 
-            while (pin.Value == stateToWaitFor) { };
+            while (GPIO.DigitalRead(pin) == stateToWaitFor) { };
 
             _stopWatch.Stop();
 
-            return _stopWatch.Elapsed.TotalMilliseconds;
+            return _stopWatch.Elapsed.TotalSeconds;
         }
     }
 }

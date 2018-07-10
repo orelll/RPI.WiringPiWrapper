@@ -4,9 +4,11 @@ using RPI.WiringPiWrapper.Devices.LCD_Display;
 using RPI.WiringPiWrapper.Devices.ServoDriver;
 using RPI.WiringPiWrapper.Devices.SonicSensor;
 using RPI.WiringPiWrapper.Hardware.GPIOBoard;
+using RPI.WiringPiWrapper.Helpers;
 using RPI.WiringPiWrapper.Tools;
 using RPI.WiringPiWrapper.Tools.Loggers;
 using RPI.WiringPiWrapper.WiringPi;
+using RPI.WiringPiWrapper.WiringPi.Wrappers.Init;
 
 namespace RPI.WiringPiWrapper.Runner
 {
@@ -19,7 +21,9 @@ namespace RPI.WiringPiWrapper.Runner
             Console.WriteLine("Initializing GPIO...");
 
             var logger = new ConsoleLogger();
-            _gpioClass = new GPIOBoard(logger);
+            var initWrapper = new InitWrapper();
+
+            _gpioClass = new GPIOBoard(logger, initWrapper);
 
             var lcdDisplay = GetLCDDisplay();
             _gpioClass.AddDevice(lcdDisplay);
@@ -31,12 +35,12 @@ namespace RPI.WiringPiWrapper.Runner
             GPIO.DigitalWrite(1, (int)GPIO.GPIOpinvalue.Low);
         }
 
-        private static LCD_Display GetLCDDisplay()
+        private static LcdDisplay GetLCDDisplay()
         {
             var timer = new TimerClass();
             var logger = new ConsoleLogger();
 
-            var display = new LCD_Display(timer, logger);
+            var display = new LcdDisplay(timer, logger);
 
             return display;
         }
@@ -56,7 +60,7 @@ namespace RPI.WiringPiWrapper.Runner
             while (true);
         }
 
-        private static void DoMessaging(LCD_Display lcdDisplay)
+        private static void DoMessaging(LcdDisplay lcdDisplay)
         {
             var readedLine = string.Empty;
             
