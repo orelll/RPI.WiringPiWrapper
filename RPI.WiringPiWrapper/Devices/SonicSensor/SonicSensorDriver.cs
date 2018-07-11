@@ -5,11 +5,22 @@ using RPI.WiringPiWrapper.WiringPi.Wrappers.GPIO;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Timing;
 using System;
 using System.Diagnostics;
+using RPI.WiringPiWrapper.Hardware;
 
 namespace RPI.WiringPiWrapper.Devices.SonicSensor
 {
-    public class SonicSensorDriver
+    public class SonicSensorDriver: DeviceBase
     {
+        public IPin EchoPin
+        {
+            get => _echoPin;
+        }
+
+        public IPin TrigggPin
+        {
+            get => _triggerPin;
+        }
+
         private readonly IPin _echoPin;
         private readonly IPin _triggerPin;
         private readonly IWrapGPIO _gpio;
@@ -42,18 +53,18 @@ namespace RPI.WiringPiWrapper.Devices.SonicSensor
             _gpio.PinMode(_triggerPin);
             _gpio.PinMode(_echoPin);
 
-            _gpio.DigitalWrite(_triggerPin, (int)GPIO.GPIOpinvalue.Low);
+            _gpio.DigitalWrite(_triggerPin, GPIO.GPIOpinvalue.Low);
 
             Console.WriteLine("Done.");
         }
 
+        public TimeSpan elapsedTime;
         public double GetDistance()
         {
-            var stopwatch = new Stopwatch();
-
             Console.WriteLine("Triggering device...");
+
             // Clears the trigPin
-            _gpio.DigitalWrite(_triggerPin, (int)GPIO.GPIOpinvalue.Low);
+            _gpio.DigitalWrite(_triggerPin, GPIO.GPIOpinvalue.Low);
             _timing.DelayMicroseconds(5);
 
             // Sets the trigPin on HIGH state for 10 micro seconds
@@ -62,14 +73,14 @@ namespace RPI.WiringPiWrapper.Devices.SonicSensor
             _gpio.DigitalWrite(_triggerPin, GPIO.GPIOpinvalue.Low);
 
             while (_gpio.DigitalRead(_echoPin) != GPIO.GPIOpinvalue.High) { };
-            stopwatch.Start();
+            var start = DateTime.Now;
 
             // Reads the echoPin, returns the sound wave travel time in microseconds
             while (_gpio.DigitalRead(_echoPin) == GPIO.GPIOpinvalue.High) { }
 
-            stopwatch.Stop();
-            var echSleptTime = stopwatch.Elapsed.TotalMilliseconds;
-            var distance = echSleptTime * 343 / 2;
+            var stop = DateTime.Now;
+            var echSleptTime = stop - start;
+            var distance = echSleptTime.TotalMilliseconds * 343 / 2;
 
             return distance;
         }

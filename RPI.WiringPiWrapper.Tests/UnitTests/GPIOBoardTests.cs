@@ -1,8 +1,8 @@
-﻿using RPI.WiringPiWrapper.Hardware.GPIOBoard;
-using System;
-using AutoFixture;
+﻿using AutoFixture;
+using RPI.WiringPiWrapper.Hardware.GPIOBoard;
 using RPI.WiringPiWrapper.Helpers.Loggers;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Init;
+using System;
 using Xunit;
 
 namespace RPI.WiringPiWrapper.Tests.UnitTests
@@ -26,7 +26,7 @@ namespace RPI.WiringPiWrapper.Tests.UnitTests
         {
             //a
             var fixture = new Fixture();
-            //fixture.Customize(new AutoConfiguredMoqCustomization());
+            //_fixture.Customize(new AutoConfiguredMoqCustomization());
 
             var loggerStub = new DummyLogger();
             var initStub = fixture.Create<IWrapInit>();
