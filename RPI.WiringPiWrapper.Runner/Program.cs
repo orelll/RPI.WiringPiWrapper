@@ -2,8 +2,10 @@
 using RPI.WiringPiWrapper.Devices.ServoDriver;
 using RPI.WiringPiWrapper.Devices.SonicSensor;
 using RPI.WiringPiWrapper.Hardware.GPIOBoard;
+using RPI.WiringPiWrapper.Hardware.Pins;
 using RPI.WiringPiWrapper.Helpers;
 using RPI.WiringPiWrapper.Helpers.Loggers;
+using RPI.WiringPiWrapper.Interfaces;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.GPIO;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Init;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Timing;
@@ -25,13 +27,42 @@ namespace RPI.WiringPiWrapper.Runner
 
             _gpioClass = new GPIOBoard(logger, initWrapper);
 
-            var lcdDisplay = GetLCDDisplay();
-            _gpioClass.AddDevice(lcdDisplay);
-
-            DoMessaging(lcdDisplay);
+            RideTheHood();
 
             Console.WriteLine("All job is done");
             Console.ReadKey();
+        }
+
+        private static void RideTheHood()
+        {
+            var lFNumber = 1;
+            var lBNumber = 1;
+            var rFNumber = 1;
+            var rBNumber = 1;
+
+            IPin lF = new DOPin(lFNumber);
+            IPin lB = new DOPin(lBNumber);
+            IPin rF = new DOPin(rFNumber);
+            IPin rB = new DOPin(rBNumber);
+
+            var gpio = new GPIOWrapper();
+
+            var rider = new Rider(gpio, lF, rF, lB, rB);
+
+            rider.MoveAhead();
+            Thread.Sleep(2000);
+            rider.MoveBack();
+            Thread.Sleep(2000);
+            rider.TurnLeft();
+            Thread.Sleep(2000);
+            rider.TurnRight();
+            Thread.Sleep(2000);
+            rider.TurnLeftInPlace();
+            Thread.Sleep(2000);
+            rider.TurnRightInPlace();
+            Thread.Sleep(2000);
+
+            rider.Stop();
         }
 
         private static LcdDisplay GetLCDDisplay()
