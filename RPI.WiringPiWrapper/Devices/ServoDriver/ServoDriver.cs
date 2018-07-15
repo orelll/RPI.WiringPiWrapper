@@ -5,6 +5,7 @@ using RPI.WiringPiWrapper.Helpers.Loggers;
 using RPI.WiringPiWrapper.WiringPi;
 using System;
 using System.Threading;
+using RPI.WiringPiWrapper.WiringPi.Wrappers.I2C;
 
 namespace RPI.WiringPiWrapper.Devices.ServoDriver
 {
@@ -32,13 +33,16 @@ namespace RPI.WiringPiWrapper.Devices.ServoDriver
         private const byte ALLLED_OFF_H = 0xFD;
 
         private int _deviceHandler;
+        private readonly IWrapI2C _i2cWrapper;
 
-        public ServoDriver(int deviceAddress, ILogger logger, ITimer timer) : base(deviceAddress, logger, timer)
+        public ServoDriver(IWrapI2C i2cWrapper, int deviceAddress, ILogger logger, ITimer timer) : base(deviceAddress, logger, timer)
         {
+            _i2cWrapper = i2cWrapper ?? throw new ArgumentNullException(nameof(i2cWrapper));
+
             logger.WriteMessage($"Initializing servo driver using {deviceAddress} address");
         }
 
-        public ServoDriver() : this(0x40, new DummyLogger(), new TimerClass())
+        public ServoDriver() : this(new I2CWrapper(), 0x40, new DummyLogger(), new TimerClass())
         {
         }
 

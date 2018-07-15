@@ -10,5 +10,9 @@ namespace RPI.WiringPiWrapper.Hardware.Pins
 
         public PinBase(int number, GPIO.GPIOpinmode mode) => (Number, PinMode) = (number, mode);
 
+        public override string ToString()
+        {
+            return $"nr.: {Number}, mode: {PinMode}";
+        }
     }
 }

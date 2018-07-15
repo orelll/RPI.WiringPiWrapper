@@ -1,13 +1,19 @@
-﻿using System;
+﻿using RPI.WiringPiWrapper.WiringPi.Wrappers.GPIO;
+using System;
 using System.Diagnostics;
 using System.Threading;
-using RPI.WiringPiWrapper.WiringPi;
 
 namespace RPI.WiringPiWrapper.Helpers
 {
     public class HighPrecisionTimer2
     {
         private static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
+        private readonly IWrapGPIO _gpioWrapper;
+
+        public HighPrecisionTimer2(IWrapGPIO gpioWrapper)
+        {
+            _gpioWrapper = gpioWrapper ?? throw new ArgumentNullException(nameof(gpioWrapper));
+        }
 
         public double ConvertTicksToDistance(long ticks)
         {
@@ -18,17 +24,18 @@ namespace RPI.WiringPiWrapper.Helpers
 
         public static double GetTimeUntilNextEdge(int pin, int stateToWaitFor)
         {
-            stopWatch.Reset();
+            throw new NotImplementedException();
+            //stopWatch.Reset();
 
-            while (GPIO.DigitalRead(pin) != stateToWaitFor) { };
+            //while (_gpioWrapper.DigitalRead(pin) != stateToWaitFor) { };
 
-            stopWatch.Start();
+            //stopWatch.Start();
 
-            while (GPIO.DigitalRead(pin) == stateToWaitFor) { };
+            //while (_gpioWrapper.DigitalRead(pin) == stateToWaitFor) { };
 
-            stopWatch.Stop();
+            //stopWatch.Stop();
 
-            return stopWatch.Elapsed.TotalSeconds;
+            //return stopWatch.Elapsed.TotalSeconds;
         }
 
         public void SleepMicroseconds(int delayMicroseconds)
