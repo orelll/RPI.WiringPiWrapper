@@ -20,20 +20,26 @@ namespace RPI.WiringPiWrapper.Runner
 
         private static void Main(string[] args)
         {
-            Console.WriteLine("Initializing GPIO...");
-
-            var logger = new ConsoleLogger();
+            var logger = new NLogger();
+            logger.WriteMessage("Initializing GPIO...");
             var initWrapper = new InitWrapper();
 
-            _gpioClass = new GPIOBoard(logger, initWrapper);
+            try
+            {
+                _gpioClass = new GPIOBoard(logger, initWrapper);
 
-            RideTheHood();
+                RideTheHood(logger);
+            }
+            catch (Exception a)
+            {
+                logger.WriteMessage(a);
+            }
 
             Console.WriteLine("All job is done");
             Console.ReadKey();
         }
 
-        private static void RideTheHood()
+        private static void RideTheHood(ILogger logger)
         {
             var lFNumber = 1;
             var lBNumber = 1;
@@ -47,7 +53,7 @@ namespace RPI.WiringPiWrapper.Runner
 
             var gpio = new GPIOWrapper();
 
-            var rider = new Rider(gpio, lF, rF, lB, rB);
+            var rider = new Rider(gpio, lF, rF, lB, rB, logger);
 
             rider.MoveAhead();
             Thread.Sleep(2000);
