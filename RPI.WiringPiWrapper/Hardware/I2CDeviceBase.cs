@@ -1,7 +1,7 @@
-﻿using RPI.WiringPiWrapper.Exceptions;
+﻿using FluentGuard;
+using RPI.WiringPiWrapper.Exceptions;
 using RPI.WiringPiWrapper.Interfaces;
 using RPI.WiringPiWrapper.WiringPi;
-using System;
 using System.Collections.Generic;
 
 namespace RPI.WiringPiWrapper.Hardware
@@ -14,17 +14,23 @@ namespace RPI.WiringPiWrapper.Hardware
 
         public I2CDeviceBase(int addr, ILogger logger, ITimer timer) : base(logger)
         {
-            _timer = timer ?? throw new ArgumentException(nameof(timer));
+            _timer = FluentGuard<ITimer>.On(timer).WhenNull().ThrowOnErrors();
 
             _addr = addr;
             _deviceHandler = I2C.WiringPiI2CSetup(_addr);
 
             if (_deviceHandler < 1) throw new I2CInitializationException(_addr);
 
+            LogDeviceStartup();
+        }
+
+        public override void LogDeviceStartup()
+        {
             _log.WriteMessage($"Obtained device handler: {_deviceHandler:X4}");
         }
 
         //# Write a single command
+
         public void WriteCommand(int cmd)
         {
             I2C.WiringPiI2CWrite(_deviceHandler, cmd);
@@ -32,6 +38,7 @@ namespace RPI.WiringPiWrapper.Hardware
         }
 
         //# Read a single byte
+
         public int Read()
         {
             return I2C.WiringPiI2CRead(_deviceHandler);
@@ -40,6 +47,6 @@ namespace RPI.WiringPiWrapper.Hardware
         /// <summary>
         /// return SDA && SCL pins
         /// </summary>
-        public new IEnumerable<int> ListUsedPins => new List<int> { 8, 9 };
+        public new IEnumerable<int> ListUsedPins => new List<int> {8, 9};
     }
 }

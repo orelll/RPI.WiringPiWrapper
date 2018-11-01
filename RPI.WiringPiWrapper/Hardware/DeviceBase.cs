@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentGuard;
 using RPI.WiringPiWrapper.Interfaces;
 using RPI.WiringPiWrapper.Helpers.Loggers;
 
@@ -13,11 +14,13 @@ namespace RPI.WiringPiWrapper.Hardware
 
         protected DeviceBase(ILogger logger)
         {
-            _log = logger ?? throw new ArgumentNullException(nameof(logger));
+            _log = FluentGuard<ILogger>.On(logger).WhenNull().ThrowOnErrors();
         }
 
         protected DeviceBase() : this(new DummyLogger())
         {
         }
+
+        public abstract void LogDeviceStartup();
     }
 }

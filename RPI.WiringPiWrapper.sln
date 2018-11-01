@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPI.WiringPiWrapper.Runner", "RPI.WiringPiWrapper.Runner\RPI.WiringPiWrapper.Runner.csproj", "{CB39E173-D36A-4C8D-9CD3-6A0C4F6246C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPI.WiringPiWrapper.ConsoleRunner", "RPI.WiringPiWrapper.Runner\RPI.WiringPiWrapper.ConsoleRunner.csproj", "{CB39E173-D36A-4C8D-9CD3-6A0C4F6246C6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPI.WiringPiWrapper.Tests", "RPI.WiringPiWrapper.Tests\RPI.WiringPiWrapper.Tests.csproj", "{558465DF-FFC2-4924-AD9F-6E96391EE9A4}"
 EndProject

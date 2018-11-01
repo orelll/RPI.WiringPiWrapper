@@ -9,7 +9,10 @@ namespace RPI.WiringPiWrapper.Hardware.Pins
     {
         private IPin _target;
 
-        public PinValidator(IPin target) => (_target) = (target);
+        public PinValidator(IPin target)
+        {
+            _target = target;
+        }
 
         public static PinValidator Using(IPin pinToValidate)
         {
@@ -18,7 +21,10 @@ namespace RPI.WiringPiWrapper.Hardware.Pins
 
         public PinValidator ValidateMode(GPIOpinmode mode)
         {
-            return _target.PinMode == mode ? this : throw new PinStateValidationException($"Given pin state: { _target.PinMode.ToString()} vs { mode.ToString()}");
+            return _target.PinMode == mode
+                ? this
+                : throw new PinStateValidationException(
+                    $"Given pin state: {_target.PinMode.ToString()} vs {mode.ToString()}");
         }
 
         public PinValidator AgainstNull()

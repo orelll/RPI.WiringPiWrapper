@@ -8,7 +8,7 @@ namespace RPI.WiringPiWrapper.Hardware.Pins
         public int Number { get; }
         public GPIO.GPIOpinmode PinMode { get; }
 
-        public PinBase(int number, GPIO.GPIOpinmode mode) => (Number, PinMode) = (number, mode);
+        protected PinBase(int number, GPIO.GPIOpinmode mode) => (Number, PinMode) = (number, mode);
 
         public override string ToString()
         {

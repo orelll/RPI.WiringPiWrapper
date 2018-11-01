@@ -54,7 +54,7 @@ namespace RPI.WiringPiWrapper.Tests.Devices.SonicSensor
 
             //aaa
             gpioSpy.Received(1).PinMode(sut.EchoPin);
-            gpioSpy.Received(1).PinMode(sut.TrigggPin);
+            gpioSpy.Received(1).PinMode(sut.TriggerPin);
         }
 
         [Theory, Fixture_For_UnitTests]
@@ -63,7 +63,7 @@ namespace RPI.WiringPiWrapper.Tests.Devices.SonicSensor
             SonicSensorDriver sut)
         {
             //a
-            var triggerPin = sut.TrigggPin;
+            var triggerPin = sut.TriggerPin;
 
             //aa
             sut.Configure();
@@ -120,7 +120,7 @@ namespace RPI.WiringPiWrapper.Tests.Devices.SonicSensor
             readedDistance = sut.GetDistance();
             
             //aaa
-            var measuredTime = sut.elapsedTime.TotalMilliseconds;
+            //var measuredTime = sut.elapsedTime.TotalMilliseconds;
 
             Assert.Equal(milisToSleep, measuredTime);
         }

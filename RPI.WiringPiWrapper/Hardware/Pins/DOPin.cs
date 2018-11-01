@@ -1,5 +1,4 @@
-﻿
-using RPI.WiringPiWrapper.WiringPi;
+﻿using RPI.WiringPiWrapper.WiringPi;
 
 namespace RPI.WiringPiWrapper.Hardware.Pins
 {
@@ -9,6 +8,9 @@ namespace RPI.WiringPiWrapper.Hardware.Pins
         {
         }
 
-        public void SetValue(GPIO.GPIOpinvalue value) => GPIO.DigitalWrite(Number, (int)value);
+        public void SetValue(GPIO.GPIOpinvalue value)
+        {
+            GPIO.DigitalWrite(Number, (int) value);
+        }
     }
 }

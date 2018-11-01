@@ -5,6 +5,7 @@ using RPI.WiringPiWrapper.WiringPi.Wrappers.GPIO;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Timing;
 using System;
 using System.Diagnostics;
+using FluentGuard;
 using RPI.WiringPiWrapper.Hardware;
 
 namespace RPI.WiringPiWrapper.Devices.SonicSensor
@@ -16,7 +17,7 @@ namespace RPI.WiringPiWrapper.Devices.SonicSensor
             get => _echoPin;
         }
 
-        public IPin TrigggPin
+        public IPin TriggerPin
         {
             get => _triggerPin;
         }
@@ -25,6 +26,7 @@ namespace RPI.WiringPiWrapper.Devices.SonicSensor
         private readonly IPin _triggerPin;
         private readonly IWrapGPIO _gpio;
         private readonly IWrapTiming _timing;
+        private const double _soundSpeed = 343;
 
         public SonicSensorDriver(IWrapGPIO gpioWrapper, IWrapTiming timingWrapper) : this(echoPin: new DIPin(7), triggerPin: new DOPin(0)
                                                                                         , gpioWrapper: gpioWrapper, timingWrapper: timingWrapper)
@@ -34,8 +36,8 @@ namespace RPI.WiringPiWrapper.Devices.SonicSensor
 
         public SonicSensorDriver(IPin echoPin, IPin triggerPin, IWrapGPIO gpioWrapper, IWrapTiming timingWrapper)
         {
-            _gpio = gpioWrapper ?? throw new ArgumentNullException(nameof(gpioWrapper));
-            _timing = timingWrapper ?? throw new ArgumentNullException(nameof(timingWrapper));
+            _gpio = FluentGuard<IWrapGPIO>.On(gpioWrapper).WhenNull().ThrowOnErrors();
+            _timing = FluentGuard<IWrapTiming>.On(timingWrapper).WhenNull().ThrowOnErrors();
 
             PinValidator.Using(echoPin).AgainstNull().ValidateMode(GPIO.GPIOpinmode.Input);
             PinValidator.Using(triggerPin).AgainstNull().ValidateMode(GPIO.GPIOpinmode.Output);
@@ -43,25 +45,24 @@ namespace RPI.WiringPiWrapper.Devices.SonicSensor
             _echoPin = echoPin;
             _triggerPin = triggerPin;
 
-            Console.WriteLine($"Sonic sensor driver configured. Echo: {_echoPin}, trigger: {_triggerPin}");
+            _log.WriteMessage($"Sonic sensor driver configured. Echo: {_echoPin}, trigger: {_triggerPin}");
         }
 
         public void Configure()
         {
-            Console.WriteLine("Starting sonic sensor configuration...");
+           _log.WriteMessage("Starting sonic sensor configuration...");
 
             _gpio.PinMode(_triggerPin);
             _gpio.PinMode(_echoPin);
 
             _gpio.DigitalWrite(_triggerPin, GPIO.GPIOpinvalue.Low);
 
-            Console.WriteLine("Done.");
+            _log.WriteMessage("Done.");
         }
 
-        public TimeSpan elapsedTime;
         public double GetDistance()
         {
-            Console.WriteLine("Triggering device...");
+            _log.WriteMessage("Triggering device...");
 
             // Clears the trigPin
             _gpio.DigitalWrite(_triggerPin, GPIO.GPIOpinvalue.Low);
@@ -80,9 +81,16 @@ namespace RPI.WiringPiWrapper.Devices.SonicSensor
 
             var stop = DateTime.Now;
             var echSleptTime = stop - start;
-            var distance = echSleptTime.TotalMilliseconds * 343 / 2;
+            var distance = CalculateDistance(echSleptTime);
 
             return distance;
         }
+
+        public override void LogDeviceStartup()
+        {
+            _log.WriteMessage($"{this.GetType()} with echo pin {EchoPin} and trigger pin {TriggerPin} started.");
+        }
+
+        private double CalculateDistance(TimeSpan elapsedTime) => elapsedTime.TotalMilliseconds * _soundSpeed / 2;
     }
 }

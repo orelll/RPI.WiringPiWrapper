@@ -2,8 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/RPI.WiringPiWrapper/DesignTimeBuild
-/.vs/RPI.WiringPiWrapper/v15/Server/sqlite3
+/.vs
 /RPI.WiringPiWrapper/bin
 /RPI.WiringPiWrapper/obj
 /RPI.WiringPiWrapper/publish
@@ -19,4 +18,3 @@
 /RPI.WiringPiWrapper.Runner/obj
 /RPI.WiringPiWrapper.Runner/bin/Debug/netcoreapp2.0
 /RPI.WiringPiWrapper.Runner/obj
-/RPI/RPI.WiringPiWrapper/.vs

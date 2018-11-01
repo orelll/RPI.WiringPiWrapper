@@ -129,7 +129,7 @@ namespace RPI.WiringPiWrapper.Runner
 
                 if (string.IsNullOrEmpty(readedValue)) break;
 
-                driverHandler.SetPWM(int.Parse(readedValue));
+                driverHandler.SetPWM(1, int.Parse(readedValue));
             }
         }
 
