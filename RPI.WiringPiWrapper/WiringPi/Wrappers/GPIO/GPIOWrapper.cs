@@ -15,16 +15,16 @@ namespace RPI.WiringPiWrapper.WiringPi.Wrappers.GPIO
         {
             PinValidator.Using(pin).ValidateMode(GPIOpinmode.Input);
 
-            var readedData = WiringPi.GPIO.DigitalRead(pin.Number);
+            var readData = WiringPi.GPIO.DigitalRead(pin.Number);
 
-            switch(readedData)
+            switch(readData)
             {
                 case (int)GPIOpinvalue.High:
                     return GPIOpinvalue.High;
                 case (int)GPIOpinvalue.Low:
                     return GPIOpinvalue.Low;
                 default:
-                    throw new System.Exception($"Readed value not applicable to GPIOpinvalue");
+                    throw new System.Exception($"Read value not applicable to GPIO pin value");
             }
         }
 

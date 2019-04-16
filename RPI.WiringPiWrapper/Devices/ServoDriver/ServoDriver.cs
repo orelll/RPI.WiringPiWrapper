@@ -48,13 +48,13 @@ namespace RPI.WiringPiWrapper.Devices.ServoDriver
         public void Configure()
         {
             _log.WriteMessage(
-                $"Setting register1 {MODE1:X4}, resp: {I2C.WiringPiI2CWriteReg8(_deviceHandler, REGISTER1, MODE1)}");
+                $"Setting register1 {MODE1:X4}, resp: {I2C.WiringPiI2CWriteReg8(DeviceHandler, REGISTER1, MODE1)}");
 
             _log.WriteMessage(
-                $"Setting register2 {MODE2:X4}, resp: {I2C.WiringPiI2CWriteReg8(_deviceHandler, REGISTER2, MODE2)}");
+                $"Setting register2 {MODE2:X4}, resp: {I2C.WiringPiI2CWriteReg8(DeviceHandler, REGISTER2, MODE2)}");
 
             _log.WriteMessage($"Validating registers...");
-            var tempRegValue = I2C.WiringPiI2CReadReg8(_deviceHandler, REGISTER1);
+            var tempRegValue = I2C.WiringPiI2CReadReg8(DeviceHandler, REGISTER1);
 
             if (tempRegValue == MODE1)
             {
@@ -66,7 +66,7 @@ namespace RPI.WiringPiWrapper.Devices.ServoDriver
                 throw new Exception("Register1 is configured wrong");
             }
 
-            tempRegValue = I2C.WiringPiI2CReadReg8(_deviceHandler, REGISTER2);
+            tempRegValue = I2C.WiringPiI2CReadReg8(DeviceHandler, REGISTER2);
 
             if (tempRegValue == MODE2)
             {
@@ -82,7 +82,7 @@ namespace RPI.WiringPiWrapper.Devices.ServoDriver
         public void Reset()
         {
             _log.WriteMessage("Resetting device...");
-            var reg1Value = I2C.WiringPiI2CReadReg8(_deviceHandler, REGISTER1);
+            var reg1Value = I2C.WiringPiI2CReadReg8(DeviceHandler, REGISTER1);
             _log.WriteMessage($"Obtained value: {reg1Value:X8}");
 
             if (IsBitSet(reg1Value, 7))
@@ -92,11 +92,11 @@ namespace RPI.WiringPiWrapper.Devices.ServoDriver
             }
 
             SetBit(ref reg1Value, 7);
-            I2C.WiringPiI2CWriteReg8(_deviceHandler, REGISTER1, 0x00);
-            _log.WriteMessage($"Setting register1... {I2C.WiringPiI2CWriteReg8(_deviceHandler, REGISTER1, reg1Value)}");
+            I2C.WiringPiI2CWriteReg8(DeviceHandler, REGISTER1, 0x00);
+            _log.WriteMessage($"Setting register1... {I2C.WiringPiI2CWriteReg8(DeviceHandler, REGISTER1, reg1Value)}");
             Thread.Sleep(1);
 
-            reg1Value = I2C.WiringPiI2CReadReg8(_deviceHandler, REGISTER1);
+            reg1Value = I2C.WiringPiI2CReadReg8(DeviceHandler, REGISTER1);
             _log.WriteMessage($"Register1 after resetting: {reg1Value:X8}");
         }
 
@@ -105,10 +105,10 @@ namespace RPI.WiringPiWrapper.Devices.ServoDriver
             var on = 0;
             var off = value;
             
-            I2C.WiringPiI2CWriteReg8(_deviceHandler, LED0_ON_L + 4 * channel, on & 0xFF);
-            I2C.WiringPiI2CWriteReg8(_deviceHandler, LED0_ON_H + 4 * channel, on >> 8);
-            I2C.WiringPiI2CWriteReg8(_deviceHandler, LED0_OFF_L + 4 * channel, off & 0xFF);
-            I2C.WiringPiI2CWriteReg8(_deviceHandler, LED0_OFF_H + 4 * channel, off >> 8);
+            I2C.WiringPiI2CWriteReg8(DeviceHandler, LED0_ON_L + 4 * channel, on & 0xFF);
+            I2C.WiringPiI2CWriteReg8(DeviceHandler, LED0_ON_H + 4 * channel, on >> 8);
+            I2C.WiringPiI2CWriteReg8(DeviceHandler, LED0_OFF_L + 4 * channel, off & 0xFF);
+            I2C.WiringPiI2CWriteReg8(DeviceHandler, LED0_OFF_H + 4 * channel, off >> 8);
         }
 
         #region helpers

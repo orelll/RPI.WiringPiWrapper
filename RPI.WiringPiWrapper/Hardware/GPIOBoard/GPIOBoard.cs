@@ -11,10 +11,19 @@ namespace RPI.WiringPiWrapper.Hardware.GPIOBoard
 {
     public class GPIOBoard
     {
-        public IList<IDevice> DevicesList => _devicesList;
+        public IList<IDevice> DevicesList
+        {
+            get { return _devicesList; }
+        }
         private IList<IDevice> _devicesList;
 
-        public IList<IPin> PinsList => _pinsList;
+        public IList<IPin> PinsList
+        {
+            get
+            {
+               return _pinsList;
+            }
+        }
         private IList<IPin> _pinsList;
 
         private readonly ILogger _log;

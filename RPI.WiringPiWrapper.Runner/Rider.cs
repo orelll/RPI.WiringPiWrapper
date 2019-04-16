@@ -9,30 +9,30 @@ namespace RPI.WiringPiWrapper.Runner
         private ILogger log;
 
         private IWrapGPIO _gpio;
-        private IPin _leftForward;
+        private IPin _leftPin;
         private IPin _leftBackward;
-        private IPin _rightForward;
+        private IPin _rightPin;
         private IPin _rightBackward;
 
-        public Rider(GPIOWrapper gpio, IPin leftForward, IPin rightForward, ILogger logger)
+        public Rider(GPIOWrapper gpio, IPin leftPin, IPin rightPin, ILogger logger)
         {
             _gpio = gpio;
-            _leftForward = leftForward;
+            _leftPin = leftPin;
             _leftBackward = null;
 
-            _rightForward = rightForward;
+            _rightPin = rightPin;
             _rightBackward = null;
 
             log = logger;
         }
 
-        public Rider(GPIOWrapper gpio, IPin leftForward, IPin rightForward, IPin leftBackward, IPin rightBackward, ILogger logger)
+        public Rider(IWrapGPIO gpio, IPin leftPin, IPin rightPin, IPin leftBackward, IPin rightBackward, ILogger logger)
         {
             _gpio = gpio;
-            _leftForward = leftForward;
+            _leftPin = leftPin;
             _leftBackward = leftBackward;
 
-            _rightForward = rightForward;
+            _rightPin = rightPin;
             _rightBackward = rightBackward;
 
             log = logger;
@@ -41,9 +41,9 @@ namespace RPI.WiringPiWrapper.Runner
         public void Stop()
         {
             AddExecuteLog();
-            _gpio.DigitalWrite(_leftForward, WiringPi.GPIO.GPIOpinvalue.Low);
+            _gpio.DigitalWrite(_leftPin, WiringPi.GPIO.GPIOpinvalue.Low);
             _gpio.DigitalWrite(_leftBackward, WiringPi.GPIO.GPIOpinvalue.Low);
-            _gpio.DigitalWrite(_rightForward, WiringPi.GPIO.GPIOpinvalue.Low);
+            _gpio.DigitalWrite(_rightPin, WiringPi.GPIO.GPIOpinvalue.Low);
             _gpio.DigitalWrite(_rightBackward, WiringPi.GPIO.GPIOpinvalue.Low);
             AddDoneLog();
         }
@@ -53,8 +53,8 @@ namespace RPI.WiringPiWrapper.Runner
             Stop();
 
             AddExecuteLog();
-            _gpio.DigitalWrite(_leftForward, WiringPi.GPIO.GPIOpinvalue.High);
-            _gpio.DigitalWrite(_rightForward, WiringPi.GPIO.GPIOpinvalue.High);
+            _gpio.DigitalWrite(_leftPin, WiringPi.GPIO.GPIOpinvalue.High);
+            _gpio.DigitalWrite(_rightPin, WiringPi.GPIO.GPIOpinvalue.High);
             AddDoneLog();
         }
 
@@ -73,7 +73,7 @@ namespace RPI.WiringPiWrapper.Runner
             Stop();
 
             AddExecuteLog();
-            _gpio.DigitalWrite(_rightForward, WiringPi.GPIO.GPIOpinvalue.High);
+            _gpio.DigitalWrite(_rightPin, WiringPi.GPIO.GPIOpinvalue.High);
             AddDoneLog();
         }
 
@@ -82,7 +82,7 @@ namespace RPI.WiringPiWrapper.Runner
             Stop();
 
             AddExecuteLog();
-            _gpio.DigitalWrite(_leftForward, WiringPi.GPIO.GPIOpinvalue.High);
+            _gpio.DigitalWrite(_leftPin, WiringPi.GPIO.GPIOpinvalue.High);
             AddDoneLog();
         }
 
@@ -92,7 +92,7 @@ namespace RPI.WiringPiWrapper.Runner
 
             AddExecuteLog();
             _gpio.DigitalWrite(_leftBackward, WiringPi.GPIO.GPIOpinvalue.High);
-            _gpio.DigitalWrite(_rightForward, WiringPi.GPIO.GPIOpinvalue.High);
+            _gpio.DigitalWrite(_rightPin, WiringPi.GPIO.GPIOpinvalue.High);
             AddDoneLog();
         }
 
@@ -102,7 +102,7 @@ namespace RPI.WiringPiWrapper.Runner
 
             AddExecuteLog();
             _gpio.DigitalWrite(_rightBackward, WiringPi.GPIO.GPIOpinvalue.High);
-            _gpio.DigitalWrite(_leftForward, WiringPi.GPIO.GPIOpinvalue.High);
+            _gpio.DigitalWrite(_leftPin, WiringPi.GPIO.GPIOpinvalue.High);
             AddDoneLog();
         }
 

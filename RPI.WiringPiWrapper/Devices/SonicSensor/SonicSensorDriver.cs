@@ -26,7 +26,7 @@ namespace RPI.WiringPiWrapper.Devices.SonicSensor
         private readonly IPin _triggerPin;
         private readonly IWrapGPIO _gpio;
         private readonly IWrapTiming _timing;
-        private const double _soundSpeed = 343;
+        private readonly double _soundSpeed = 343;
 
         public SonicSensorDriver(IWrapGPIO gpioWrapper, IWrapTiming timingWrapper) : this(echoPin: new DIPin(7), triggerPin: new DOPin(0)
                                                                                         , gpioWrapper: gpioWrapper, timingWrapper: timingWrapper)

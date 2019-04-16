@@ -60,6 +60,7 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
 
         #endregion commands
 
+        //TODO: address should be hidden above some abstraction
         public LcdDisplay(ITimer timer, ILogger logger, int address = 0x3f) : base(address, logger, timer)
         {
             Initialize();
@@ -67,6 +68,8 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
 
         private void Initialize()
         {
+            _log.WriteMessage($"Initializing device {DeviceHandler} ({this.GetType()})");
+
             WriteCommand(0x03);
             WriteCommand(0x03);
             WriteCommand(0x03);
@@ -76,7 +79,9 @@ namespace RPI.WiringPiWrapper.Devices.LCD_Display
             WriteCommand(_lcdDisplaycontrol | _lcdDisplayon);
             WriteCommand(_lcdCleardisplay);
             WriteCommand(_lcdEntrymodeset | _lcdEntryleft);
-            _timer.SleepMiliseconds(1);
+            _timer.SleepMiliseconds(2);
+
+            _log.WriteMessage("Initialization finished");
         }
 
         /// <summary>

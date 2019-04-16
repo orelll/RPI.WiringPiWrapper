@@ -1,4 +1,5 @@
-﻿using RPI.WiringPiWrapper.Devices.LCD_Display;
+﻿using RPI.WiringPiWrapper.ConsoleRunner.IoC;
+using RPI.WiringPiWrapper.Devices.LCD_Display;
 using RPI.WiringPiWrapper.Devices.ServoDriver;
 using RPI.WiringPiWrapper.Devices.SonicSensor;
 using RPI.WiringPiWrapper.Hardware.GPIOBoard;
@@ -6,29 +7,38 @@ using RPI.WiringPiWrapper.Hardware.Pins;
 using RPI.WiringPiWrapper.Helpers;
 using RPI.WiringPiWrapper.Helpers.Loggers;
 using RPI.WiringPiWrapper.Interfaces;
+using RPI.WiringPiWrapper.Runner;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.GPIO;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Init;
 using RPI.WiringPiWrapper.WiringPi.Wrappers.Timing;
 using System;
 using System.Threading;
+using NLog.Config;
+using RPI.WiringPiWrapper.WiringPi.Wrappers.I2C;
 
-namespace RPI.WiringPiWrapper.Runner
+namespace RPI.WiringPiWrapper.ConsoleRunner
 {
     internal class Program
     {
         private static GPIOBoard _gpioClass;
+        private static TypesResolver _typesResolver;
 
         private static void Main(string[] args)
         {
-            var logger = new NLogger();
+            _typesResolver = new TypesResolver();
+
+            var logger = _typesResolver.ResolveType<ILogger>();
+
             logger.WriteMessage("Initializing GPIO...");
-            var initWrapper = new InitWrapper();
+            
 
             try
             {
+                var initWrapper = _typesResolver.ResolveType<IWrapInit>();
                 _gpioClass = new GPIOBoard(logger, initWrapper);
 
-                RideTheHood(logger);
+                var gpioWrapper = _typesResolver.ResolveType<IWrapGPIO>();
+                RideTheHood(logger, gpioWrapper);
             }
             catch (Exception a)
             {
@@ -39,7 +49,7 @@ namespace RPI.WiringPiWrapper.Runner
             Console.ReadKey();
         }
 
-        private static void RideTheHood(ILogger logger)
+        private static void RideTheHood(ILogger logger, IWrapGPIO gpioWrapper)
         {
             var lFNumber = 1;
             var lBNumber = 1;
@@ -51,9 +61,8 @@ namespace RPI.WiringPiWrapper.Runner
             IPin rF = new DOPin(rFNumber);
             IPin rB = new DOPin(rBNumber);
 
-            var gpio = new GPIOWrapper();
 
-            var rider = new Rider(gpio, lF, rF, lB, rB, logger);
+            var rider = new Rider(gpioWrapper, lF, rF, lB, rB, logger);
 
             rider.MoveAhead();
             Thread.Sleep(2000);
@@ -71,29 +80,17 @@ namespace RPI.WiringPiWrapper.Runner
             rider.Stop();
         }
 
-        private static LcdDisplay GetLCDDisplay()
+        private static LcdDisplay GetLCDDisplay(ITimer timer, ILogger logger) =>  new LcdDisplay(timer, logger);
+
+        private static void DoSonicMeasuring(IWrapGPIO gpioWrapper, IWrapTiming timingWrapper, int delay)
         {
-            var timer = new TimerClass();
-            var logger = new ConsoleLogger();
-
-            var display = new LcdDisplay(timer, logger);
-
-            return display;
-        }
-
-        private static void DoSonicMeasuring()
-        {
-            var gpioWrapper = new GPIOWrapper();
-            var timingWrapper = new TimingWrapper();
-
             var sonicSensorDriver = new SonicSensorDriver(gpioWrapper, timingWrapper);
             sonicSensorDriver.Configure();
 
             do
             {
                 sonicSensorDriver.GetDistance();
-
-                Thread.Sleep(500);
+                Thread.Sleep(delay);
             }
             while (true);
         }
@@ -113,9 +110,9 @@ namespace RPI.WiringPiWrapper.Runner
             while (!string.IsNullOrEmpty(readedLine));
         }
 
-        private static void DoPWM()
+        private static void DoPWM(IWrapI2C i2cWrapper, ILogger logger, ITimer timer, int address)
         {
-            var driverHandler = new ServoDriver();
+            var driverHandler = new ServoDriver(i2cWrapper, address, logger, timer);
             driverHandler.Configure();
             driverHandler.Reset();
             Console.WriteLine($"Obtained hanlder: {driverHandler}");
@@ -127,7 +124,10 @@ namespace RPI.WiringPiWrapper.Runner
                 Console.WriteLine("Give me value:");
                 readedValue = Console.ReadLine();
 
-                if (string.IsNullOrEmpty(readedValue)) break;
+                if (string.IsNullOrEmpty(readedValue))
+                {
+                    break;
+                }
 
                 driverHandler.SetPWM(1, int.Parse(readedValue));
             }
@@ -135,27 +135,7 @@ namespace RPI.WiringPiWrapper.Runner
 
         private void DoDisco()
         {
-            //var pinmode = GPIOpinmode.Output;
-            //GPIO.pinMode(_testingPin, (int)pinmode);
-
-            //Console.WriteLine("Staring blinker");
-            //MakeSimpleBlinkingLoop(150);
-        }
-
-        private static void MakeSimpleBlinkingLoop(int iterarions)
-        {
-            //for (int i = 0; i < iterarions; i++)
-            //{
-            //    var delay = GetDelayTime(i);
-
-            //    Console.WriteLine($"Setting pin {_testingPin} to state: {GPIOpinvalue.High}");
-            //    GPIO.digitalWrite(_testingPin, (int)GPIOpinvalue.High);
-            //    Thread.Sleep(delay);
-
-            //    Console.WriteLine($"Setting pin {_testingPin} to state: {GPIOpinvalue.Low}");
-            //    GPIO.digitalWrite(_testingPin, (int)GPIOpinvalue.Low);
-            //    Thread.Sleep(delay);
-            //}
+          
         }
 
         private static int GetDelayTime(int iteration)
